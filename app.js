@@ -5,6 +5,9 @@ const editors = [
         name: "Alex Mercer",
         rate: "$45/hr",
         avatar: "https://i.pravatar.cc/150?u=alex",
+        locationName: "New York, NY",
+        lat: 40.7128,
+        lng: -74.0060,
         rating: 4.9,
         reviews: 124,
         categories: ["YouTube", "Cinematic"],
@@ -21,6 +24,9 @@ const editors = [
         name: "Sarah Chen",
         rate: "$60/hr",
         avatar: "https://i.pravatar.cc/150?u=sarah",
+        locationName: "Los Angeles, CA",
+        lat: 34.0522,
+        lng: -118.2437,
         rating: 5.0,
         reviews: 89,
         categories: ["Cinematic", "Corporate"],
@@ -36,6 +42,9 @@ const editors = [
         name: "Marcus Johnson",
         rate: "$35/hr",
         avatar: "https://i.pravatar.cc/150?u=marcus",
+        locationName: "Chicago, IL",
+        lat: 41.8781,
+        lng: -87.6298,
         rating: 4.8,
         reviews: 210,
         categories: ["TikTok", "YouTube"],
@@ -52,6 +61,9 @@ const editors = [
         name: "Elena Rodriguez",
         rate: "$50/hr",
         avatar: "https://i.pravatar.cc/150?u=elena",
+        locationName: "Miami, FL",
+        lat: 25.7617,
+        lng: -80.1918,
         rating: 4.9,
         reviews: 156,
         categories: ["Corporate"],
@@ -79,35 +91,23 @@ const typingText = document.getElementById('typing-text');
 let currentFilter = 'All';
 let currentSearch = '';
 
-// Typing Effect Array
-const typingWords = ["Video Editors", "VFX Artists", "Content Creators", "Visual Storytellers"];
+// Fade Effect Array
+const fadeWords = ["Video Editors", "VFX Artists", "Content Creators", "Visual Storytellers"];
 let wordIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
 
-function typeEffect() {
-    const currentWord = typingWords[wordIndex];
-    
-    if (isDeleting) {
-        typingText.textContent = currentWord.substring(0, charIndex - 1);
-        charIndex--;
-    } else {
-        typingText.textContent = currentWord.substring(0, charIndex + 1);
-        charIndex++;
-    }
+function fadeEffect() {
+    typingText.classList.remove('text-fade-in');
+    typingText.classList.add('text-fade-out');
 
-    let typeSpeed = isDeleting ? 50 : 100;
+    setTimeout(() => {
+        wordIndex = (wordIndex + 1) % fadeWords.length;
+        typingText.textContent = fadeWords[wordIndex];
+        
+        typingText.classList.remove('text-fade-out');
+        typingText.classList.add('text-fade-in');
+    }, 500); // Wait for fadeOut animation to finish
 
-    if (!isDeleting && charIndex === currentWord.length) {
-        typeSpeed = 2000; // Pause at end of word
-        isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        wordIndex = (wordIndex + 1) % typingWords.length;
-        typeSpeed = 500; // Pause before new word
-    }
-
-    setTimeout(typeEffect, typeSpeed);
+    setTimeout(fadeEffect, 3000); // Change word every 3 seconds
 }
 
 
@@ -133,18 +133,74 @@ function observeElements() {
 }
 
 
+// --- Location Logic ---
+let userLocation = null;
+const btnLocation = document.getElementById('btn-location');
+const locationStatus = document.getElementById('location-status');
+
+// Haversine formula to calculate distance in miles
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 3958.8; // Radius of Earth in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+if (btnLocation) {
+    btnLocation.addEventListener('click', () => {
+        locationStatus.textContent = "Locating...";
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    locationStatus.textContent = "Location Found";
+                    renderEditors();
+                },
+                (error) => {
+                    locationStatus.textContent = "Location Denied";
+                    console.error("Error getting location", error);
+                    // Fallback to a mock location (e.g., somewhere in the US) if denied
+                    userLocation = { lat: 39.8283, lng: -98.5795 };
+                    renderEditors();
+                }
+            );
+        } else {
+            locationStatus.textContent = "Not Supported";
+        }
+    });
+}
+
 // Render Editor Cards
 function renderEditors() {
     editorsGrid.innerHTML = '';
     
     // Filter and Search Logic
-    const filteredEditors = editors.filter(editor => {
+    let filteredEditors = editors.filter(editor => {
         const matchesFilter = currentFilter === 'All' || editor.categories.includes(currentFilter) || editor.categories.includes(currentFilter.split(' ')[0]);
         const searchLower = currentSearch.toLowerCase();
         const matchesSearch = editor.name.toLowerCase().includes(searchLower) || 
-                              editor.skills.some(skill => skill.toLowerCase().includes(searchLower));
+                              editor.skills.some(skill => skill.toLowerCase().includes(searchLower)) ||
+                              (editor.locationName && editor.locationName.toLowerCase().includes(searchLower));
         return matchesFilter && matchesSearch;
     });
+
+    // Distance Calculation and Sorting
+    if (userLocation) {
+        filteredEditors.forEach(editor => {
+            if (editor.lat && editor.lng) {
+                editor.distance = getDistance(userLocation.lat, userLocation.lng, editor.lat, editor.lng);
+            }
+        });
+        filteredEditors.sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
+    }
 
     if (filteredEditors.length === 0) {
         noResults.classList.remove('hidden');
@@ -157,7 +213,15 @@ function renderEditors() {
             // Add slight stagger for grid items
             card.style.transitionDelay = `${(index % 4) * 0.1}s`;
             
+            let distanceHtml = '';
+            if (userLocation && editor.distance !== undefined) {
+                distanceHtml = `<div class="distance-badge"><i class="fa-solid fa-location-arrow"></i> ${editor.distance.toFixed(1)} mi</div>`;
+            } else if (editor.locationName) {
+                distanceHtml = `<div class="distance-badge"><i class="fa-solid fa-map-pin"></i> ${editor.locationName}</div>`;
+            }
+            
             card.innerHTML = `
+                ${distanceHtml}
                 <div class="editor-header">
                     <img src="${editor.avatar}" alt="${editor.name}" class="editor-avatar">
                     <div class="editor-info">
@@ -248,5 +312,5 @@ btnBack.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
     renderEditors();
     observeElements();
-    setTimeout(typeEffect, 1000); // Start typing effect
+    setTimeout(fadeEffect, 1000); // Start fade effect
 });

@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salixframe | Hire Top Freelance Video Editors</title>
     <meta name="description" content="Discover and hire the best freelance video editors for your projects. Watch their portfolios and hire directly.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- System Fonts Used -->
     <link rel="stylesheet" href="styles.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -58,9 +56,14 @@
                     <button class="filter-tab" data-filter="Corporate">Corporate</button>
                 </div>
                 
-                <div class="search-bar">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" id="search-input" placeholder="Search by name or skill...">
+                <div class="search-and-location">
+                    <button id="btn-location" class="btn-secondary" style="padding: 0.8rem; border-radius: 8px; display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
+                        <i class="fa-solid fa-location-dot"></i> <span id="location-status">Find Nearest</span>
+                    </button>
+                    <div class="search-bar">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search by name or skill...">
+                    </div>
                 </div>
             </div>
 
@@ -141,7 +144,9 @@
             <p>Empowering creators and editors worldwide.</p>
             <div class="socials">
                 <i class="fa-brands fa-twitter"></i>
-                <i class="fa-brands fa-instagram"></i>
+                <a href="https://www.instagram.com/salimtk_/" target="_blank" style="color: inherit; text-decoration: none;">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
                 <i class="fa-brands fa-youtube"></i>
             </div>
         </div>
