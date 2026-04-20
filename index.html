@@ -21,8 +21,8 @@
             <li><a href="#testimonials">Testimonials</a></li>
         </ul>
         <div class="nav-actions fade-up stagger-2">
-            <button class="btn-ghost">Log In</button>
-            <button class="btn-primary">Sign Up</button>
+            <button class="btn-ghost" id="nav-login">Log In</button>
+            <button class="btn-primary" id="nav-signup">Sign Up</button>
         </div>
     </nav>
 
@@ -34,8 +34,8 @@
                 <h1 class="fade-up stagger-1">Elevate your content with top <br><span id="typing-text" class="typing-text">Video Editors</span>.</h1>
                 <p class="fade-up stagger-2">Join Salixframe to connect with elite freelance talent. Create, collaborate, and scale your production instantly.</p>
                 <div class="hero-buttons fade-up stagger-3">
-                    <a href="#explore" class="btn-primary btn-large">Hire an Editor</a>
-                    <button class="btn-secondary btn-large">Join as Editor</button>
+                    <button id="btn-customer-auth" class="btn-primary btn-large">Hire an Editor</button>
+                    <button id="btn-editor-auth" class="btn-secondary btn-large">Join as Editor</button>
                 </div>
             </div>
             <div class="hero-glow"></div>
@@ -156,5 +156,37 @@
     </footer>
 
     <script src="app.js"></script>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal-overlay hidden">
+        <div class="modal-container fade-up visible">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-title">Welcome Back</h2>
+                <p id="modal-subtitle">Login to your Customer account</p>
+            </div>
+            
+            <div class="auth-type-toggle">
+                <button id="toggle-customer" class="type-btn active">Customer</button>
+                <button id="toggle-editor" class="type-btn">Editor</button>
+            </div>
+
+            <form id="auth-form" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full" id="auth-submit">Log In</button>
+            </form>
+
+            <div class="modal-footer">
+                <p id="switch-auth-text">Don't have an account? <a href="#" id="auth-mode-toggle">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
