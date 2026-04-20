@@ -331,95 +331,26 @@ document.addEventListener('DOMContentLoaded', () => {
     renderEditors();
     observeElements();
     setTimeout(fadeEffect, 1000); // Start fade effect
-});
+    
+    // Quick Form Handlers
+    const editorForm = document.getElementById('quick-form-editor');
+    const customerForm = document.getElementById('quick-form-customer');
 
-// Auth Modal Logic
-const authModal = document.getElementById('auth-modal');
-const closeModal = document.getElementById('close-modal');
-const btnCustomerAuth = document.getElementById('btn-customer-auth');
-const btnEditorAuth = document.getElementById('btn-editor-auth');
-const navLogin = document.getElementById('nav-login');
-const navSignup = document.getElementById('nav-signup');
-const toggleCustomer = document.getElementById('toggle-customer');
-const toggleEditor = document.getElementById('toggle-editor');
-const authForm = document.getElementById('auth-form');
-const modalTitle = document.getElementById('modal-title');
-const modalSubtitle = document.getElementById('modal-subtitle');
-const authSubmit = document.getElementById('auth-submit');
-const switchAuthText = document.getElementById('switch-auth-text');
-
-let authMode = 'login'; // 'login' or 'signup'
-let userType = 'customer'; // 'customer' or 'editor'
-
-function openAuthModal(type = 'customer', mode = 'login') {
-    userType = type;
-    authMode = mode;
-    updateAuthUI();
-    authModal.classList.remove('hidden');
-}
-
-function closeAuthModal() {
-    authModal.classList.add('hidden');
-}
-
-function updateAuthUI() {
-    // Update active toggle button
-    if (userType === 'customer') {
-        toggleCustomer.classList.add('active');
-        toggleEditor.classList.remove('active');
-    } else {
-        toggleEditor.classList.add('active');
-        toggleCustomer.classList.remove('active');
-    }
-
-    // Update titles and text based on mode
-    if (authMode === 'login') {
-        modalTitle.textContent = "Welcome Back";
-        modalSubtitle.textContent = `Login to your ${userType.charAt(0).toUpperCase() + userType.slice(1)} account`;
-        authSubmit.textContent = "Log In";
-        switchAuthText.innerHTML = `Don't have an account? <a href="#" id="auth-mode-toggle">Sign Up</a>`;
-    } else {
-        modalTitle.textContent = "Join Salixframe";
-        modalSubtitle.textContent = `Create your ${userType.charAt(0).toUpperCase() + userType.slice(1)} account`;
-        authSubmit.textContent = "Sign Up";
-        switchAuthText.innerHTML = `Already have an account? <a href="#" id="auth-mode-toggle">Log In</a>`;
-    }
-
-    // Re-attach toggle link listener
-    const toggleLink = document.getElementById('auth-mode-toggle');
-    if (toggleLink) {
-        toggleLink.addEventListener('click', (e) => {
+    if (editorForm) {
+        editorForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            authMode = authMode === 'login' ? 'signup' : 'login';
-            updateAuthUI();
+            const username = editorForm.querySelector('input[type="text"]').value;
+            alert(`Welcome, ${username}! You have successfully joined as an Editor.`);
+            window.location.href = 'index.html';
         });
     }
-}
 
-// Event Listeners
-if (btnCustomerAuth) btnCustomerAuth.addEventListener('click', () => openAuthModal('customer', 'signup'));
-if (btnEditorAuth) btnEditorAuth.addEventListener('click', () => openAuthModal('editor', 'signup'));
-if (navLogin) navLogin.addEventListener('click', () => openAuthModal('customer', 'login'));
-if (navSignup) navSignup.addEventListener('click', () => openAuthModal('customer', 'signup'));
-
-if (closeModal) closeModal.addEventListener('click', closeAuthModal);
-window.addEventListener('click', (e) => {
-    if (e.target === authModal) closeAuthModal();
-});
-
-if (toggleCustomer) toggleCustomer.addEventListener('click', () => {
-    userType = 'customer';
-    updateAuthUI();
-});
-
-if (toggleEditor) toggleEditor.addEventListener('click', () => {
-    userType = 'editor';
-    updateAuthUI();
-});
-
-if (authForm) authForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = document.getElementById('username').value;
-    alert(`Success! Logged in as ${username} (${userType})`);
-    closeAuthModal();
+    if (customerForm) {
+        customerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = customerForm.querySelector('input[type="text"]').value;
+            alert(`Welcome, ${username}! We are finding the best editors for you.`);
+            window.location.href = 'index.html';
+        });
+    }
 });

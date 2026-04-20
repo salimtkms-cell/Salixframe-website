@@ -21,8 +21,8 @@
             <li><a href="#testimonials">Testimonials</a></li>
         </ul>
         <div class="nav-actions fade-up stagger-2">
-            <button class="btn-ghost" id="nav-login">Log In</button>
-            <button class="btn-primary" id="nav-signup">Sign Up</button>
+            <a href="login.html?mode=login" class="btn-ghost" id="nav-login">Log In</a>
+            <a href="login.html?mode=signup" class="btn-primary" id="nav-signup">Sign Up</a>
         </div>
     </nav>
 
@@ -34,8 +34,8 @@
                 <h1 class="fade-up stagger-1">Elevate your content with top <br><span id="typing-text" class="typing-text">Video Editors</span>.</h1>
                 <p class="fade-up stagger-2">Join Salixframe to connect with elite freelance talent. Create, collaborate, and scale your production instantly.</p>
                 <div class="hero-buttons fade-up stagger-3">
-                    <button id="btn-customer-auth" class="btn-primary btn-large">Hire an Editor</button>
-                    <button id="btn-editor-auth" class="btn-secondary btn-large">Join as Editor</button>
+                    <a href="login.html?type=customer&mode=signup" id="btn-customer-auth" class="btn-primary btn-large">Hire an Editor</a>
+                    <a href="login.html?type=editor&mode=signup" id="btn-editor-auth" class="btn-secondary btn-large">Join as Editor</a>
                 </div>
             </div>
             <div class="hero-glow"></div>
@@ -136,6 +136,62 @@
         </div>
     </div>
 
+    <!-- Quick Access Section -->
+    <section id="quick-auth" class="section-quick-auth">
+        <div class="section-header fade-up">
+            <h2>Ready to Start?</h2>
+            <p>Access your portal or create an account instantly.</p>
+        </div>
+        
+        <div class="quick-auth-container">
+            <!-- Editor Card -->
+            <div class="quick-auth-card editor-side fade-up stagger-1">
+                <div class="card-glow"></div>
+                <div class="card-icon">
+                    <i class="fa-solid fa-clapperboard"></i>
+                </div>
+                <h3>For Editors</h3>
+                <p>Showcase your talent and find work.</p>
+                
+                <form class="quick-form" id="quick-form-editor">
+                    <div class="form-group">
+                        <input type="text" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-primary btn-full">Join as Editor</button>
+                </form>
+                <div class="card-footer">
+                    Already an editor? <a href="login.html?type=editor&mode=login">Log In</a>
+                </div>
+            </div>
+
+            <!-- Customer Card -->
+            <div class="quick-auth-card customer-side fade-up stagger-2">
+                <div class="card-glow"></div>
+                <div class="card-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <h3>For Customers</h3>
+                <p>Find the perfect editor for your brand.</p>
+                
+                <form class="quick-form" id="quick-form-customer">
+                    <div class="form-group">
+                        <input type="text" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-secondary btn-full">Find an Editor</button>
+                </form>
+                <div class="card-footer">
+                    Returning client? <a href="login.html?type=customer&mode=login">Log In</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="footer-content fade-up">
             <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
@@ -156,37 +212,5 @@
     </footer>
 
     <script src="app.js"></script>
-
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="modal-overlay hidden">
-        <div class="modal-container fade-up visible">
-            <button class="close-modal" id="close-modal">&times;</button>
-            <div class="modal-header">
-                <h2 id="modal-title">Welcome Back</h2>
-                <p id="modal-subtitle">Login to your Customer account</p>
-            </div>
-            
-            <div class="auth-type-toggle">
-                <button id="toggle-customer" class="type-btn active">Customer</button>
-                <button id="toggle-editor" class="type-btn">Editor</button>
-            </div>
-
-            <form id="auth-form" class="auth-form">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter your username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="btn-primary btn-full" id="auth-submit">Log In</button>
-            </form>
-
-            <div class="modal-footer">
-                <p id="switch-auth-text">Don't have an account? <a href="#" id="auth-mode-toggle">Sign Up</a></p>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
