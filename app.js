@@ -1,6 +1,24 @@
 // Dummy data
 const editors = [
     {
+        id: 0,
+        name: "salimtkms",
+        rate: "$80/hr",
+        avatar: "https://i.pravatar.cc/150?u=salimtkms",
+        locationName: "Kottakkal",
+        lat: 11.0006,
+        lng: 75.9984,
+        rating: 5.0,
+        reviews: 342,
+        categories: ["YouTube", "Cinematic", "TikTok"],
+        skills: ["Premiere Pro", "After Effects", "Color Grading"],
+        bio: "Expert Video Editor specializing in high-retention content. Bringing professional quality from Kottakkal to the world.",
+        works: [
+            { title: "Kottakkal Cinematic Short", category: "Cinematic", thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=600&q=80" },
+            { title: "Creator Vlog Edit", category: "YouTube", thumbnail: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=600&q=80" }
+        ]
+    },
+    {
         id: 1,
         name: "Alex Mercer",
         rate: "$45/hr",
