@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salixframe | Hire Top Freelance Video Editors</title>
+    <meta name="description" content="Discover and hire the best freelance video editors for your projects. Watch their portfolios and hire directly.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo fade-up">
+            <i class="fa-solid fa-video"></i> Salixframe
+        </div>
+        <ul class="nav-links fade-up stagger-1">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#explore">Explore</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+        </ul>
+        <div class="nav-actions fade-up stagger-2">
+            <button class="btn-ghost">Log In</button>
+            <button class="btn-primary">Sign Up</button>
+        </div>
+    </nav>
+
+    <!-- Main View: Marketplace -->
+    <main id="main-view">
+        <header class="hero" id="home">
+            <div class="hero-content">
+                <div class="badge fade-up">🔥 The #1 platform for video creators</div>
+                <h1 class="fade-up stagger-1">Elevate your content with top <br><span id="typing-text" class="typing-text">Video Editors</span>.</h1>
+                <p class="fade-up stagger-2">Join Salixframe to connect with elite freelance talent. Create, collaborate, and scale your production instantly.</p>
+                <div class="hero-buttons fade-up stagger-3">
+                    <a href="#explore" class="btn-primary btn-large">Hire an Editor</a>
+                    <button class="btn-secondary btn-large">Join as Editor</button>
+                </div>
+            </div>
+            <div class="hero-glow"></div>
+        </header>
+
+        <section id="explore" class="section-explore">
+            <div class="section-header fade-up">
+                <h2>Featured Editors</h2>
+                <p>Top rated professionals ready for your project.</p>
+            </div>
+            
+            <div class="controls-container fade-up stagger-1">
+                <div class="filter-tabs" id="filter-tabs">
+                    <button class="filter-tab active" data-filter="All">All</button>
+                    <button class="filter-tab" data-filter="YouTube">YouTube</button>
+                    <button class="filter-tab" data-filter="Cinematic">Cinematic</button>
+                    <button class="filter-tab" data-filter="TikTok">TikTok / Reels</button>
+                    <button class="filter-tab" data-filter="Corporate">Corporate</button>
+                </div>
+                
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search by name or skill...">
+                </div>
+            </div>
+
+            <div class="editors-grid" id="editors-grid">
+                <!-- Dynamically populated by JS -->
+            </div>
+            
+            <div id="no-results" class="hidden" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                <i class="fa-solid fa-ghost" style="font-size: 3rem; margin-bottom: 1rem; color: var(--border-hover);"></i>
+                <h3>No editors found</h3>
+                <p>Try adjusting your search or filters.</p>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="section-testimonials">
+            <div class="section-header fade-up">
+                <h2>What Creators Say</h2>
+                <p>Don't just take our word for it.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-up stagger-1">
+                    <div class="rating" style="margin-bottom: 1rem;">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Salixframe made it incredibly easy to find an editor who understood my channel's vibe. My retention rates have doubled since hiring Marcus."</p>
+                    <div class="testimonial-author">
+                        <img src="https://i.pravatar.cc/100?u=a" alt="User">
+                        <div>
+                            <h4>David L.</h4>
+                            <p>Tech YouTuber (1.2M Subs)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-up stagger-2">
+                    <div class="rating" style="margin-bottom: 1rem;">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"I needed a cinematic touch for our documentary. Found Sarah within 10 minutes and the final cut was breathtaking. Highly recommend."</p>
+                    <div class="testimonial-author">
+                        <img src="https://i.pravatar.cc/100?u=b" alt="User">
+                        <div>
+                            <h4>Jessica T.</h4>
+                            <p>Indie Filmmaker</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-up stagger-3">
+                    <div class="rating" style="margin-bottom: 1rem;">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"The turnaround time and professionalism on this platform is unmatched. Best investment for our marketing agency this year."</p>
+                    <div class="testimonial-author">
+                        <img src="https://i.pravatar.cc/100?u=c" alt="User">
+                        <div>
+                            <h4>Michael R.</h4>
+                            <p>Creative Director</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Detail View: Editor Portfolio (hidden by default) -->
+    <div id="portfolio-view" class="hidden">
+        <button class="btn-back fade-up" id="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Explore</button>
+        <div id="portfolio-content">
+            <!-- Dynamically populated by JS -->
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content fade-up">
+            <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+                <i class="fa-solid fa-video"></i> Salixframe
+            </div>
+            <p>Empowering creators and editors worldwide.</p>
+            <div class="socials">
+                <i class="fa-brands fa-twitter"></i>
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-youtube"></i>
+            </div>
+        </div>
+        <div class="footer-bottom fade-up stagger-1">
+            <p>&copy; 2026 Salixframe. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
