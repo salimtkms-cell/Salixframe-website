@@ -3,11 +3,51 @@ let editors = [];
 async function fetchEditors() {
     try {
         const response = await fetch('/api/editors');
+        if (!response.ok) throw new Error('Server not responding');
         editors = await response.json();
         renderEditors();
     } catch (error) {
-        console.error('Error fetching editors:', error);
-        // Fallback or empty state
+        console.error('Error fetching editors, using fallback data:', error);
+        // Fallback data for static preview
+        editors = [
+            {
+                id: 1,
+                name: "Marcus Chen",
+                rate: "$45/hr",
+                avatar: "https://i.pravatar.cc/150?u=marcus",
+                locationName: "New York, NY",
+                lat: 40.7128,
+                lng: -74.0060,
+                rating: 4.9,
+                reviews: 124,
+                categories: ["YouTube", "Cinematic"],
+                skills: ["Premiere Pro", "After Effects", "Color Grading"],
+                bio: "Specializing in high-energy YouTube content and cinematic travel films. Over 8 years of experience working with top creators.",
+                works: [
+                    { title: "Mountain Peak Travelog", category: "Cinematic", thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
+                    { title: "Tech Review 2026", category: "YouTube", thumbnail: "https://images.unsplash.com/photo-1526738549149-8e07eca2c1b4?auto=format&fit=crop&w=600&q=80" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Sarah Jenkins",
+                rate: "$60/hr",
+                avatar: "https://i.pravatar.cc/150?u=sarah",
+                locationName: "Los Angeles, CA",
+                lat: 34.0522,
+                lng: -118.2437,
+                rating: 5.0,
+                reviews: 89,
+                categories: ["Cinematic", "Corporate"],
+                skills: ["DaVinci Resolve", "Sound Design", "VFX"],
+                bio: "Award-winning short film editor. I bring a narrative focus to every project, whether it's a 30-second commercial or a 20-minute documentary.",
+                works: [
+                    { title: "Urban Pulse", category: "Cinematic", thumbnail: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=600&q=80" },
+                    { title: "Corporate Vision", category: "Corporate", thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" }
+                ]
+            }
+        ];
+        renderEditors();
     }
 }
 
