@@ -4,6 +4,11 @@
       "username": "salim",
       "password": "password",
       "type": "customer"
+    },
+    {
+      "username": "rw",
+      "password": "wsty",
+      "type": "editor"
     }
   ],
   "editors": [
@@ -72,6 +77,19 @@
           "thumbnail": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80"
         }
       ]
+    },
+    {
+      "id": 1776750575736,
+      "name": "rw",
+      "rate": "$25/hr",
+      "avatar": "https://i.pravatar.cc/150?u=rw",
+      "locationName": "Remote",
+      "rating": 0,
+      "reviews": 0,
+      "categories": [],
+      "skills": [],
+      "bio": "New editor on Salixframe.",
+      "works": []
     }
   ]
 }

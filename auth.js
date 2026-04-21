@@ -31,7 +31,7 @@ function updateAuthUI() {
         authSubmit.textContent = "Log In";
         switchAuthText.innerHTML = `Don't have an account? <a href="#" id="auth-mode-toggle">Sign Up</a>`;
     } else {
-        authTitle.textContent = "Join Salixframe";
+        authTitle.textContent = "Join SL-space";
         authSubtitle.textContent = `Create your ${typeLabel} account`;
         authSubmit.textContent = "Sign Up";
         switchAuthText.innerHTML = `Already have an account? <a href="#" id="auth-mode-toggle">Log In</a>`;

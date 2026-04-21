@@ -100,7 +100,7 @@ app.post('/api/register', async (req, res) => {
             reviews: 0,
             categories: [],
             skills: [],
-            bio: "New editor on Salixframe.",
+            bio: "New editor on SL-space.",
             works: []
         };
         data.editors.push(newEditor);
