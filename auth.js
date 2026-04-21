@@ -59,11 +59,34 @@ if (toggleEditor) toggleEditor.addEventListener('click', () => {
     updateAuthUI();
 });
 
-if (authForm) authForm.addEventListener('submit', (e) => {
+if (authForm) authForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const username = document.getElementById('username').value;
-    alert(`Success! ${authMode === 'login' ? 'Logged in' : 'Account created'} as ${username} (${userType})`);
-    window.location.href = 'index.html';
+    const password = document.getElementById('password').value;
+
+    const endpoint = authMode === 'login' ? '/api/login' : '/api/register';
+    const payload = { username, password, type: userType };
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            localStorage.setItem('user', JSON.stringify(result.user));
+            alert(`${authMode === 'login' ? 'Logged in' : 'Account created'} successfully!`);
+            window.location.href = 'index.html';
+        } else {
+            alert(result.message || 'Authentication failed');
+        }
+    } catch (error) {
+        console.error('Auth error:', error);
+        alert('Could not connect to the server. Make sure it is running.');
+    }
 });
 
 // Initialize

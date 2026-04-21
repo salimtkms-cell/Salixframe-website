@@ -1,99 +1,15 @@
-// Dummy data
-const editors = [
-    {
-        id: 0,
-        name: "salimtkms",
-        rate: "$80/hr",
-        avatar: "profile.jpg",
-        locationName: "Kottakkal",
-        lat: 11.0006,
-        lng: 75.9984,
-        rating: 5.0,
-        reviews: 342,
-        categories: ["YouTube", "Cinematic", "TikTok"],
-        skills: ["Premiere Pro", "After Effects", "Color Grading"],
-        bio: "Expert Video Editor specializing in high-retention content. Bringing professional quality from Kottakkal to the world.",
-        works: [
-            { title: "Kottakkal Cinematic Short", category: "Cinematic", thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=600&q=80" },
-            { title: "Creator Vlog Edit", category: "YouTube", thumbnail: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=600&q=80" }
-        ]
-    },
-    {
-        id: 1,
-        name: "Alex Mercer",
-        rate: "$45/hr",
-        avatar: "https://i.pravatar.cc/150?u=alex",
-        locationName: "New York, NY",
-        lat: 40.7128,
-        lng: -74.0060,
-        rating: 4.9,
-        reviews: 124,
-        categories: ["YouTube", "Cinematic"],
-        skills: ["Premiere Pro", "After Effects", "Color Grading"],
-        bio: "Specializing in cinematic edits and fast-paced YouTube content. Let's make your vision a reality. I've worked with top creators to deliver engaging stories that hold retention.",
-        works: [
-            { title: "Cyberpunk Cinematic Short", category: "Cinematic", thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=600&q=80" },
-            { title: "Tech Review Vlog", category: "YouTube", thumbnail: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=600&q=80" },
-            { title: "Music Video: Neon Nights", category: "Music Video", thumbnail: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=600&q=80" }
-        ]
-    },
-    {
-        id: 2,
-        name: "Sarah Chen",
-        rate: "$60/hr",
-        avatar: "https://i.pravatar.cc/150?u=sarah",
-        locationName: "Los Angeles, CA",
-        lat: 34.0522,
-        lng: -118.2437,
-        rating: 5.0,
-        reviews: 89,
-        categories: ["Cinematic", "Corporate"],
-        skills: ["DaVinci Resolve", "Motion Graphics", "Documentary"],
-        bio: "Award-winning documentary editor with a keen eye for storytelling and pristine color work. Bringing a professional touch to your narrative projects.",
-        works: [
-            { title: "The Last Glacier", category: "Documentary", thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
-            { title: "Corporate Brand Anthem", category: "Commercial", thumbnail: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=600&q=80" }
-        ]
-    },
-    {
-        id: 3,
-        name: "Marcus Johnson",
-        rate: "$35/hr",
-        avatar: "https://i.pravatar.cc/150?u=marcus",
-        locationName: "Chicago, IL",
-        lat: 41.8781,
-        lng: -87.6298,
-        rating: 4.8,
-        reviews: 210,
-        categories: ["TikTok", "YouTube"],
-        skills: ["Final Cut Pro", "TikTok", "Gaming"],
-        bio: "Viral content creator and editor. I know exactly what keeps viewers hooked in the first 3 seconds. Let's make your next short-form video go viral.",
-        works: [
-            { title: "Gaming Montage #45", category: "Gaming", thumbnail: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" },
-            { title: "Viral TikTok Compilation", category: "TikTok", thumbnail: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=600&q=80" },
-            { title: "Esports Tournament Highlights", category: "Gaming", thumbnail: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80" }
-        ]
-    },
-    {
-        id: 4,
-        name: "Elena Rodriguez",
-        rate: "$50/hr",
-        avatar: "https://i.pravatar.cc/150?u=elena",
-        locationName: "Miami, FL",
-        lat: 25.7617,
-        lng: -80.1918,
-        rating: 4.9,
-        reviews: 156,
-        categories: ["Corporate"],
-        skills: ["Premiere Pro", "Animation", "Corporate"],
-        bio: "Expert in transforming dull corporate footage into engaging, dynamic presentations. Over 5 years of experience with top Fortune 500 companies.",
-        works: [
-            { title: "Product Launch 2026", category: "Corporate", thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80" },
-            { title: "Explainer Animation", category: "Animation", thumbnail: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80" },
-            { title: "Event Recap", category: "Event", thumbnail: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" }
-        ]
+let editors = [];
+
+async function fetchEditors() {
+    try {
+        const response = await fetch('/api/editors');
+        editors = await response.json();
+        renderEditors();
+    } catch (error) {
+        console.error('Error fetching editors:', error);
+        // Fallback or empty state
     }
-];
+}
 
 // DOM Elements
 const editorsGrid = document.getElementById('editors-grid');
@@ -328,29 +244,7 @@ btnBack.addEventListener('click', () => {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    renderEditors();
+    fetchEditors();
     observeElements();
     setTimeout(fadeEffect, 1000); // Start fade effect
-    
-    // Quick Form Handlers
-    const editorForm = document.getElementById('quick-form-editor');
-    const customerForm = document.getElementById('quick-form-customer');
-
-    if (editorForm) {
-        editorForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = editorForm.querySelector('input[type="text"]').value;
-            alert(`Welcome, ${username}! You have successfully joined as an Editor.`);
-            window.location.href = 'index.html';
-        });
-    }
-
-    if (customerForm) {
-        customerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = customerForm.querySelector('input[type="text"]').value;
-            alert(`Welcome, ${username}! We are finding the best editors for you.`);
-            window.location.href = 'index.html';
-        });
-    }
 });
