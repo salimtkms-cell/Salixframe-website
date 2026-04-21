@@ -135,6 +135,11 @@ app.get('/api/customer/:username', async (req, res) => {
     res.json({ username: user.username, projects: [] });
 });
 
+app.get('/api/admin/users', async (req, res) => {
+    const data = await readData();
+    res.json(data.users);
+});
+
 initData().then(() => {
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);
