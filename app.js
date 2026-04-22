@@ -66,7 +66,7 @@ let currentFilter = 'All';
 let currentSearch = '';
 
 // Fade Effect Array
-const fadeWords = ["Video Editors", "VFX Artists", "Content Creators", "Visual Storytellers"];
+const fadeWords = ["Video Editors", "Content Creators"];
 let wordIndex = 0;
 
 function fadeEffect() {
