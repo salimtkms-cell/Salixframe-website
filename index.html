@@ -26,25 +26,32 @@
         </div>
     </nav>
 
-    <!-- Main View: Marketplace -->
+    <!-- Main Content -->
     <main id="main-view">
-        <header class="hero" id="home">
+        <!-- Guest View (Default) -->
+        <section id="guest-view" class="hero">
             <div class="hero-content">
                 <div class="badge fade-up">🔥 The #1 platform for video creators</div>
                 <h1 class="fade-up stagger-1">Transform your Vision with <br><span id="typing-text" class="typing-text">Elite Editors</span> in your City.</h1>
                 <p class="fade-up stagger-2">Join SL-space to connect with elite freelance talent. Create, collaborate, and scale your production instantly.</p>
                 <div class="hero-buttons fade-up stagger-3">
-                    <a href="login.html?type=customer&mode=signup" id="btn-customer-auth" class="btn-primary btn-large">Hire an Editor</a>
-                    <a href="login.html?type=editor&mode=signup" id="btn-editor-auth" class="btn-secondary btn-large">Join as Editor</a>
+                    <a href="login.html?type=customer&mode=signup" class="btn-primary btn-large">Hire an Editor</a>
+                    <a href="login.html?type=editor&mode=signup" class="btn-secondary btn-large">Join as Editor</a>
                 </div>
             </div>
             <div class="hero-glow"></div>
-        </header>
+        </section>
 
-        <section id="explore" class="section-explore">
+        <!-- Customer Dashboard -->
+        <section id="customer-dashboard" class="hidden" style="padding: 100px 5% 50px;">
+            <div class="dashboard-header fade-up" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Welcome, <span class="user-name">Customer</span></h2>
+                <button class="btn-primary" id="btn-open-requirement">Post Requirement</button>
+            </div>
+            
             <div class="section-header fade-up">
                 <h2>Featured Editors</h2>
-                <p>Top rated professionals ready for your project.</p>
+                <p>Browse top rated professionals for your project.</p>
             </div>
             
             <div class="controls-container fade-up stagger-1">
@@ -78,61 +85,101 @@
             </div>
         </section>
 
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="section-testimonials">
-            <div class="section-header fade-up">
-                <h2>What Creators Say</h2>
-                <p>Don't just take our word for it.</p>
+        <!-- Editor Dashboard -->
+        <section id="editor-dashboard" class="hidden" style="padding: 100px 5% 50px;">
+            <div class="dashboard-header fade-up" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Welcome, <span class="user-name">Editor</span></h2>
+                <button class="btn-secondary" id="btn-open-profile">Edit Profile</button>
             </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card fade-up stagger-1">
-                    <div class="rating" style="margin-bottom: 1rem;">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"SL-space made it incredibly easy to find an editor who understood my channel's vibe. My retention rates have doubled since hiring Marcus."</p>
-                    <div class="testimonial-author">
-                        <img src="https://i.pravatar.cc/100?u=a" alt="User">
-                        <div>
-                            <h4>David L.</h4>
-                            <p>Tech YouTuber (1.2M Subs)</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card fade-up stagger-2">
-                    <div class="rating" style="margin-bottom: 1rem;">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"I needed a cinematic touch for our documentary. Found Sarah within 10 minutes and the final cut was breathtaking. Highly recommend."</p>
-                    <div class="testimonial-author">
-                        <img src="https://i.pravatar.cc/100?u=b" alt="User">
-                        <div>
-                            <h4>Jessica T.</h4>
-                            <p>Indie Filmmaker</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card fade-up stagger-3">
-                    <div class="rating" style="margin-bottom: 1rem;">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"The turnaround time and professionalism on this platform is unmatched. Best investment for our marketing agency this year."</p>
-                    <div class="testimonial-author">
-                        <img src="https://i.pravatar.cc/100?u=c" alt="User">
-                        <div>
-                            <h4>Michael R.</h4>
-                            <p>Creative Director</p>
-                        </div>
-                    </div>
+            
+            <div class="requirements-section fade-up">
+                <h3><i class="fa-solid fa-thumbtack" style="color: var(--accent-primary);"></i> Customer Requirements</h3>
+                <div id="requirements-list" class="requirements-list" style="margin-top: 1.5rem; display: grid; gap: 1rem;">
+                    <!-- Requirements Loaded via JS -->
                 </div>
             </div>
         </section>
+
+        <!-- Common Sections (Testimonials) -->
+        <div id="common-sections">
+            <section id="testimonials" class="section-testimonials">
+                <div class="section-header fade-up">
+                    <h2>What Creators Say</h2>
+                    <p>Don't just take our word for it.</p>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card fade-up stagger-1">
+                        <div class="rating" style="margin-bottom: 1rem;">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"SL-space made it incredibly easy to find an editor who understood my channel's vibe. My retention rates have doubled since hiring Marcus."</p>
+                        <div class="testimonial-author">
+                            <img src="https://i.pravatar.cc/100?u=a" alt="User">
+                            <div>
+                                <h4>David L.</h4>
+                                <p>Tech YouTuber (1.2M Subs)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <!-- Detail View: Editor Portfolio (hidden by default) -->
     <div id="portfolio-view" class="hidden">
-        <button class="btn-back fade-up" id="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Explore</button>
+        <button class="btn-back fade-up" id="btn-back"><i class="fa-solid fa-arrow-left"></i> Back</button>
         <div id="portfolio-content">
             <!-- Dynamically populated by JS -->
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-profile" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h3>Update Your Profile</h3>
+            <form id="form-profile">
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="input-age" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Details</label>
+                    <input type="text" id="input-contact" placeholder="Email or Phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Instagram URL</label>
+                    <input type="url" id="input-insta">
+                </div>
+                <div class="form-group">
+                    <label>Other Social Media</label>
+                    <input type="url" id="input-social">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-ghost" id="btn-close-profile">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-requirement" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h3>Post Your Requirement</h3>
+            <form id="form-requirement">
+                <div class="form-group">
+                    <label>What do you need?</label>
+                    <textarea id="input-req-text" placeholder="e.g., Need a cinematic travel video editor..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Contact Details</label>
+                    <input type="text" id="input-req-contact" placeholder="How editors can reach you" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-ghost" id="btn-close-requirement">Cancel</button>
+                    <button type="submit" class="btn-primary">Post Now</button>
+                </div>
+            </form>
         </div>
     </div>
 

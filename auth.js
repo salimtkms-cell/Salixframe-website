@@ -77,7 +77,7 @@ if (authForm) authForm.addEventListener('submit', async (e) => {
         const result = await response.json();
 
         if (result.success) {
-            localStorage.setItem('user', JSON.stringify(result.user));
+            localStorage.setItem('currentUser', JSON.stringify(result.user));
             alert(`${authMode === 'login' ? 'Logged in' : 'Account created'} successfully!`);
             window.location.href = 'index.html';
         } else {

@@ -140,6 +140,46 @@ app.get('/api/admin/users', async (req, res) => {
     res.json(data.users);
 });
 
+// Requirements API
+app.get('/api/requirements', async (req, res) => {
+    const data = await readData();
+    res.json(data.requirements || []);
+});
+
+app.post('/api/requirements', async (req, res) => {
+    const { username, text, contact } = req.body;
+    const data = await readData();
+    if (!data.requirements) data.requirements = [];
+    data.requirements.push({
+        id: Date.now(),
+        username,
+        text,
+        contact,
+        timestamp: new Date().toISOString()
+    });
+    await writeData(data);
+    res.json({ success: true });
+});
+
+// Profile Update API
+app.post('/api/profile/update', async (req, res) => {
+    const { username, age, contact, socials } = req.body;
+    const data = await readData();
+    const userIndex = data.users.findIndex(u => u.username === username);
+    if (userIndex !== -1) {
+        data.users[userIndex] = { ...data.users[userIndex], age, contact, socials };
+        // If editor, update editor entry too
+        const editorIndex = data.editors.findIndex(e => e.name === username);
+        if (editorIndex !== -1) {
+            data.editors[editorIndex].socials = socials;
+        }
+        await writeData(data);
+        res.json({ success: true });
+    } else {
+        res.status(404).json({ error: 'User not found' });
+    }
+});
+
 initData().then(() => {
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);

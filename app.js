@@ -282,9 +282,127 @@ btnBack.addEventListener('click', () => {
     mainView.classList.remove('hidden');
 });
 
+
+// --- Dashboard & Role-based Logic ---
+const guestView = document.getElementById('guest-view');
+const customerDashboard = document.getElementById('customer-dashboard');
+const editorDashboard = document.getElementById('editor-dashboard');
+const commonSections = document.getElementById('common-sections');
+const navLogin = document.getElementById('nav-login');
+const navSignup = document.getElementById('nav-signup');
+
+function toggleView() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+    // Hide all first
+    guestView.classList.add('hidden');
+    customerDashboard.classList.add('hidden');
+    editorDashboard.classList.add('hidden');
+    commonSections.classList.add('hidden');
+
+    if (!currentUser) {
+        guestView.classList.remove('hidden');
+        commonSections.classList.remove('hidden');
+        navLogin.textContent = "Log In";
+        navLogin.href = "login.html?mode=login";
+        navSignup.style.display = "block";
+    } else {
+        navLogin.textContent = "Log Out";
+        navLogin.href = "#";
+        navLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        });
+        navSignup.style.display = "none";
+
+        document.querySelectorAll('.user-name').forEach(el => el.textContent = currentUser.username);
+
+        if (currentUser.type === 'customer') {
+            customerDashboard.classList.remove('hidden');
+            fetchEditors();
+        } else if (currentUser.type === 'editor') {
+            editorDashboard.classList.remove('hidden');
+            fetchRequirements();
+        }
+    }
+}
+
+async function fetchRequirements() {
+    const list = document.getElementById('requirements-list');
+    try {
+        const response = await fetch('/api/requirements');
+        const requirements = await response.json();
+        list.innerHTML = requirements.length ? requirements.map(req => `
+            <div class="requirement-card fade-up visible">
+                <p>"${req.text}"</p>
+                <div class="requirement-meta">
+                    <span><i class="fa-solid fa-user"></i> ${req.username}</span>
+                    <span><i class="fa-solid fa-envelope"></i> ${req.contact}</span>
+                </div>
+            </div>
+        `).join('') : '<p style="color: var(--text-secondary);">No requirements posted yet.</p>';
+    } catch (err) {
+        console.error('Error fetching requirements:', err);
+    }
+}
+
+// Modal Handlers
+const modalProfile = document.getElementById('modal-profile');
+const modalRequirement = document.getElementById('modal-requirement');
+
+document.getElementById('btn-open-profile')?.addEventListener('click', () => modalProfile.classList.remove('hidden'));
+document.getElementById('btn-close-profile')?.addEventListener('click', () => modalProfile.classList.add('hidden'));
+
+document.getElementById('btn-open-requirement')?.addEventListener('click', () => modalRequirement.classList.remove('hidden'));
+document.getElementById('btn-close-requirement')?.addEventListener('click', () => modalRequirement.classList.add('hidden'));
+
+document.getElementById('form-profile')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const data = {
+        username: currentUser.username,
+        age: document.getElementById('input-age').value,
+        contact: document.getElementById('input-contact').value,
+        socials: {
+            instagram: document.getElementById('input-insta').value,
+            social: document.getElementById('input-social').value
+        }
+    };
+    const response = await fetch('/api/profile/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    if (response.ok) {
+        alert('Profile updated successfully!');
+        modalProfile.classList.add('hidden');
+    }
+});
+
+document.getElementById('form-requirement')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const data = {
+        username: currentUser.username,
+        text: document.getElementById('input-req-text').value,
+        contact: document.getElementById('input-req-contact').value
+    };
+    const response = await fetch('/api/requirements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    if (response.ok) {
+        alert('Requirement posted successfully!');
+        modalRequirement.classList.add('hidden');
+        document.getElementById('form-requirement').reset();
+    }
+});
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    fetchEditors();
+    toggleView();
     observeElements();
     setTimeout(fadeEffect, 1000); // Start fade effect
 });
