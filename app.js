@@ -343,8 +343,12 @@ function toggleView() {
     }
 }
 
+
 async function fetchRequirements() {
     const list = document.getElementById('requirements-list');
+    const myOffersList = document.getElementById('my-offers-list');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
     try {
         const response = await fetch('/api/requirements');
         const requirements = await response.json();
@@ -357,14 +361,59 @@ async function fetchRequirements() {
                 </div>
             </div>
         `).join('') : '<p style="color: var(--text-secondary);">No requirements posted yet.</p>';
+
+        // Also fetch this editor's own offers
+        const offersResp = await fetch('/api/offers');
+        const offers = await offersResp.json();
+        const myOffers = offers.filter(o => o.username === currentUser.username);
+        myOffersList.innerHTML = myOffers.length ? myOffers.map(off => `
+            <div class="requirement-card fade-up visible" style="border-left: 4px solid var(--accent-primary);">
+                <p>${off.text}</p>
+                <div class="requirement-meta">
+                    <span><i class="fa-solid fa-tag"></i> ${off.details}</span>
+                    <span><i class="fa-solid fa-clock"></i> ${new Date(off.timestamp).toLocaleDateString()}</span>
+                </div>
+            </div>
+        `).join('') : '<p style="color: var(--text-secondary);">You haven\'t posted any offers yet.</p>';
+
     } catch (err) {
-        console.error('Error fetching requirements:', err);
+        console.error('Error fetching requirements/offers:', err);
+    }
+}
+
+async function fetchOffersForCustomers() {
+    const section = document.getElementById('customer-offers-section');
+    if (!section) return;
+    try {
+        const response = await fetch('/api/offers');
+        const offers = await response.json();
+        section.innerHTML = offers.length ? `
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem;"><i class="fa-solid fa-bolt" style="color: var(--accent-primary);"></i> Exclusive Editor Offers</h3>
+            <div class="requirements-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+                ${offers.map(off => `
+                    <div class="requirement-card fade-up visible" style="background: rgba(255, 215, 0, 0.05); border-color: rgba(255, 215, 0, 0.2);">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <strong style="color: var(--accent-primary);">${off.username}</strong>
+                            <span class="age-badge">OFFER</span>
+                        </div>
+                        <p>${off.text}</p>
+                        <div class="requirement-meta">
+                            <span><i class="fa-solid fa-tag"></i> ${off.details}</span>
+                            <button class="btn-ghost" onclick="alert('Contacting ${off.username}...')">Claim Offer</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        ` : '';
+    } catch (err) {
+        console.error('Error fetching offers for customers:', err);
     }
 }
 
 // Modal Handlers
 const modalProfile = document.getElementById('modal-profile');
 const modalRequirement = document.getElementById('modal-requirement');
+const modalOffer = document.getElementById('modal-offer');
 
 document.getElementById('btn-open-profile')?.addEventListener('click', () => modalProfile.classList.remove('hidden'));
 document.getElementById('btn-close-profile')?.addEventListener('click', () => modalProfile.classList.add('hidden'));
@@ -372,48 +421,39 @@ document.getElementById('btn-close-profile')?.addEventListener('click', () => mo
 document.getElementById('btn-open-requirement')?.addEventListener('click', () => modalRequirement.classList.remove('hidden'));
 document.getElementById('btn-close-requirement')?.addEventListener('click', () => modalRequirement.classList.add('hidden'));
 
-document.getElementById('form-profile')?.addEventListener('submit', async (e) => {
+document.getElementById('btn-open-offer')?.addEventListener('click', () => modalOffer.classList.remove('hidden'));
+document.getElementById('btn-close-offer')?.addEventListener('click', () => modalOffer.classList.add('hidden'));
+
+document.getElementById('form-offer')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const data = {
         username: currentUser.username,
-        age: document.getElementById('input-age').value,
-        contact: document.getElementById('input-contact').value,
-        socials: {
-            instagram: document.getElementById('input-insta').value,
-            social: document.getElementById('input-social').value
-        }
+        text: document.getElementById('input-offer-text').value,
+        details: document.getElementById('input-offer-details').value
     };
-    const response = await fetch('/api/profile/update', {
+    const response = await fetch('/api/offers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
     });
     if (response.ok) {
-        alert('Profile updated successfully!');
-        modalProfile.classList.add('hidden');
+        alert('Offer posted successfully!');
+        modalOffer.classList.add('hidden');
+        document.getElementById('form-offer').reset();
+        fetchRequirements(); // Refresh list
     }
 });
 
-document.getElementById('form-requirement')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
+// Update toggleView to fetch offers
+const originalToggleView = toggleView;
+toggleView = function() {
+    originalToggleView();
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const data = {
-        username: currentUser.username,
-        text: document.getElementById('input-req-text').value,
-        contact: document.getElementById('input-req-contact').value
-    };
-    const response = await fetch('/api/requirements', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-    if (response.ok) {
-        alert('Requirement posted successfully!');
-        modalRequirement.classList.add('hidden');
-        document.getElementById('form-requirement').reset();
+    if (currentUser && currentUser.type === 'customer') {
+        fetchOffersForCustomers();
     }
-});
+};
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {

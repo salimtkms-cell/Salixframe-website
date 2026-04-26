@@ -161,6 +161,27 @@ app.post('/api/requirements', async (req, res) => {
     res.json({ success: true });
 });
 
+// Editor Offers API
+app.get('/api/offers', async (req, res) => {
+    const data = await readData();
+    res.json(data.offers || []);
+});
+
+app.post('/api/offers', async (req, res) => {
+    const { username, text, details } = req.body;
+    const data = await readData();
+    if (!data.offers) data.offers = [];
+    data.offers.push({
+        id: Date.now(),
+        username,
+        text,
+        details,
+        timestamp: new Date().toISOString()
+    });
+    await writeData(data);
+    res.json({ success: true });
+});
+
 // Profile Update API
 app.post('/api/profile/update', async (req, res) => {
     const { username, age, contact, socials } = req.body;

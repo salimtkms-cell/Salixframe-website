@@ -83,19 +83,33 @@
                 <h3>No editors found</h3>
                 <p>Try adjusting your search or filters.</p>
             </div>
+
+            <!-- Editor Offers Feed -->
+            <div id="customer-offers-section"></div>
         </section>
 
         <!-- Editor Dashboard -->
         <section id="editor-dashboard" class="hidden" style="padding: 100px 5% 50px;">
             <div class="dashboard-header fade-up" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2>Welcome, <span class="user-name">Editor</span></h2>
-                <button class="btn-secondary" id="btn-open-profile">Edit Profile</button>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-primary" id="btn-open-offer">Post Offer</button>
+                    <button class="btn-secondary" id="btn-open-profile">Edit Profile</button>
+                </div>
             </div>
             
-            <div class="requirements-section fade-up">
-                <h3><i class="fa-solid fa-thumbtack" style="color: var(--accent-primary);"></i> Customer Requirements</h3>
-                <div id="requirements-list" class="requirements-list" style="margin-top: 1.5rem; display: grid; gap: 1rem;">
-                    <!-- Requirements Loaded via JS -->
+            <div class="dashboard-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="requirements-section fade-up">
+                    <h3><i class="fa-solid fa-thumbtack" style="color: var(--accent-primary);"></i> Customer Requirements</h3>
+                    <div id="requirements-list" class="requirements-list" style="margin-top: 1.5rem; display: grid; gap: 1rem;">
+                        <!-- Requirements Loaded via JS -->
+                    </div>
+                </div>
+                <div class="my-offers-section fade-up">
+                    <h3><i class="fa-solid fa-star" style="color: var(--accent-primary);"></i> My Live Offers</h3>
+                    <div id="my-offers-list" class="requirements-list" style="margin-top: 1.5rem; display: grid; gap: 1rem;">
+                        <!-- Editor's own offers loaded via JS -->
+                    </div>
                 </div>
             </div>
         </section>
@@ -178,6 +192,26 @@
                 <div class="modal-actions">
                     <button type="button" class="btn-ghost" id="btn-close-requirement">Cancel</button>
                     <button type="submit" class="btn-primary">Post Now</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-offer" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h3>Post Your Service Offer</h3>
+            <form id="form-offer">
+                <div class="form-group">
+                    <label>What are you offering?</label>
+                    <textarea id="input-offer-text" placeholder="e.g., Special 24h turnaround for YouTube vlogs - $50" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Package Price/Details</label>
+                    <input type="text" id="input-offer-details" placeholder="e.g., $50 per video" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-ghost" id="btn-close-offer">Cancel</button>
+                    <button type="submit" class="btn-primary">Post Offer</button>
                 </div>
             </form>
         </div>
