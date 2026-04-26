@@ -243,22 +243,37 @@ function openPortfolio(editor) {
     portfolioView.classList.remove('hidden');
     window.scrollTo(0, 0);
     
+    // Social links HTML
+    let socialsHtml = '';
+    if (editor.socials) {
+        if (editor.socials.instagram) socialsHtml += `<a href="${editor.socials.instagram}" target="_blank"><i class="fa-brands fa-instagram"></i></a>`;
+        if (editor.socials.social) socialsHtml += `<a href="${editor.socials.social}" target="_blank"><i class="fa-solid fa-link"></i></a>`;
+    }
+
     portfolioContent.innerHTML = `
         <div class="portfolio-header fade-up visible">
             <div class="portfolio-profile">
                 <img src="${editor.avatar}" alt="${editor.name}">
                 <div class="portfolio-profile-info">
-                    <h2>${editor.name}</h2>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <h2>${editor.name}</h2>
+                        ${editor.age ? `<span class="age-badge">${editor.age} yrs</span>` : ''}
+                    </div>
                     <p>${editor.bio}</p>
+                    <div class="portfolio-socials">
+                        ${socialsHtml}
+                    </div>
                     <div class="rating" style="margin-top: 10px;">
                         <i class="fa-solid fa-star"></i> ${editor.rating} (${editor.reviews} reviews) &bull; ${editor.rate}
                     </div>
                 </div>
             </div>
-            <button class="btn-primary btn-large">Hire ${editor.name.split(' ')[0]}</button>
+            <div class="portfolio-actions">
+                <a href="mailto:${editor.contact || 'contact@sl-space.com'}" class="btn-primary btn-large">Hire ${editor.name.split(' ')[0]}</a>
+            </div>
         </div>
         
-        <h3 class="fade-up visible" style="font-size: 1.8rem; margin-top: 1rem;">Featured Work</h3>
+        <h3 class="fade-up visible" style="font-size: 1.8rem; margin-top: 2rem;">Featured Work</h3>
         <div class="works-grid" style="margin-top: 2rem;">
             ${editor.works.map((work, index) => `
                 <div class="work-card fade-up visible" style="transition-delay: ${index * 0.1}s">

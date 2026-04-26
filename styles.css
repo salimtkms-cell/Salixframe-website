@@ -906,6 +906,53 @@ footer {
     transform: translateX(-5px);
 }
 
+.age-badge {
+    background: var(--accent-primary);
+    color: var(--text-dark);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.portfolio-socials {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.portfolio-socials a {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.portfolio-socials a:hover {
+    color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.portfolio-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Loading Spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 215, 0, 0.1);
+    border-top: 3px solid var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 /* Dashboards & Modals */
 .hidden { display: none !important; }
 
