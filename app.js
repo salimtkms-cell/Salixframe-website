@@ -410,7 +410,113 @@ async function fetchOffersForCustomers() {
     }
 }
 
-// Modal Handlers
+
+// --- Dashboard Tab Logic ---
+document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const tabName = btn.dataset.tab;
+        
+        // Update buttons
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Update panes
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+
+        if (tabName === 'portfolio') fetchEditorPortfolio();
+        if (tabName === 'settings') renderSkills();
+    });
+});
+
+async function fetchEditorPortfolio() {
+    const grid = document.getElementById('editor-portfolio-grid');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    try {
+        const response = await fetch('/api/editors');
+        const allEditors = await response.json();
+        const editor = allEditors.find(e => e.name === currentUser.username);
+        
+        if (editor && editor.works) {
+            grid.innerHTML = editor.works.map(work => `
+                <div class="work-card visible">
+                    <div class="work-thumbnail">
+                        <img src="${work.thumbnail}" alt="${work.title}">
+                    </div>
+                    <div class="work-info">
+                        <h4>${work.title}</h4>
+                        <p>${work.category}</p>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            grid.innerHTML = '<p>No projects yet. Add your first one!</p>';
+        }
+    } catch (err) {
+        console.error('Error fetching editor portfolio:', err);
+    }
+}
+
+// Portfolio Modal
+const modalWork = document.getElementById('modal-work');
+document.getElementById('btn-open-add-work')?.addEventListener('click', () => modalWork.classList.remove('hidden'));
+document.getElementById('btn-close-work')?.addEventListener('click', () => modalWork.classList.add('hidden'));
+
+document.getElementById('form-work')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const work = {
+        title: document.getElementById('input-work-title').value,
+        category: document.getElementById('input-work-category').value,
+        thumbnail: document.getElementById('input-work-thumb').value
+    };
+
+    const response = await fetch('/api/editor/work', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: currentUser.username, work })
+    });
+
+    if (response.ok) {
+        alert('Project added to portfolio!');
+        modalWork.classList.add('hidden');
+        document.getElementById('form-work').reset();
+        fetchEditorPortfolio();
+    }
+});
+
+// Skills Management
+async function renderSkills() {
+    const list = document.getElementById('current-skills-list');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const response = await fetch('/api/editors');
+    const allEditors = await response.json();
+    const editor = allEditors.find(e => e.name === currentUser.username);
+
+    if (editor && editor.skills) {
+        list.innerHTML = editor.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('');
+    }
+}
+
+document.getElementById('btn-add-skill')?.addEventListener('click', async () => {
+    const skill = document.getElementById('input-new-skill').value;
+    if (!skill) return;
+    
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const response = await fetch('/api/editor/skill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: currentUser.username, skill })
+    });
+
+    if (response.ok) {
+        document.getElementById('input-new-skill').value = '';
+        renderSkills();
+    }
+});
+
+
+// --- Modal Handlers ---
 const modalProfile = document.getElementById('modal-profile');
 const modalRequirement = document.getElementById('modal-requirement');
 const modalOffer = document.getElementById('modal-offer');
@@ -424,6 +530,52 @@ document.getElementById('btn-close-requirement')?.addEventListener('click', () =
 document.getElementById('btn-open-offer')?.addEventListener('click', () => modalOffer.classList.remove('hidden'));
 document.getElementById('btn-close-offer')?.addEventListener('click', () => modalOffer.classList.add('hidden'));
 
+// Profile Update Handler
+document.getElementById('form-profile')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const data = {
+        username: currentUser.username,
+        age: document.getElementById('input-age').value,
+        contact: document.getElementById('input-contact').value,
+        socials: {
+            instagram: document.getElementById('input-insta').value,
+            social: document.getElementById('input-social').value
+        }
+    };
+    const response = await fetch('/api/profile/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    if (response.ok) {
+        alert('Profile updated successfully!');
+        modalProfile.classList.add('hidden');
+    }
+});
+
+// Requirement Posting Handler
+document.getElementById('form-requirement')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const data = {
+        username: currentUser.username,
+        text: document.getElementById('input-req-text').value,
+        contact: document.getElementById('input-req-contact').value
+    };
+    const response = await fetch('/api/requirements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    if (response.ok) {
+        alert('Requirement posted successfully!');
+        modalRequirement.classList.add('hidden');
+        document.getElementById('form-requirement').reset();
+    }
+});
+
+// Offer Posting Handler
 document.getElementById('form-offer')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -441,17 +593,18 @@ document.getElementById('form-offer')?.addEventListener('submit', async (e) => {
         alert('Offer posted successfully!');
         modalOffer.classList.add('hidden');
         document.getElementById('form-offer').reset();
-        fetchRequirements(); // Refresh list
+        fetchRequirements(); 
     }
 });
 
-// Update toggleView to fetch offers
+// Fix toggleView to fetch correct data
 const originalToggleView = toggleView;
 toggleView = function() {
     originalToggleView();
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser && currentUser.type === 'customer') {
-        fetchOffersForCustomers();
+    if (currentUser) {
+        if (currentUser.type === 'customer') fetchOffersForCustomers();
+        if (currentUser.type === 'editor') fetchRequirements();
     }
 };
 
@@ -459,5 +612,5 @@ toggleView = function() {
 document.addEventListener('DOMContentLoaded', () => {
     toggleView();
     observeElements();
-    setTimeout(fadeEffect, 1000); // Start fade effect
+    setTimeout(fadeEffect, 1000);
 });

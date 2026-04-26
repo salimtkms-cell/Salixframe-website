@@ -201,6 +201,38 @@ app.post('/api/profile/update', async (req, res) => {
     }
 });
 
+// Add Portfolio Work
+app.post('/api/editor/work', async (req, res) => {
+    const { username, work } = req.body;
+    const data = await readData();
+    const editorIndex = data.editors.findIndex(e => e.name === username);
+    if (editorIndex !== -1) {
+        if (!data.editors[editorIndex].works) data.editors[editorIndex].works = [];
+        data.editors[editorIndex].works.push(work);
+        await writeData(data);
+        res.json({ success: true });
+    } else {
+        res.status(404).json({ error: 'Editor not found' });
+    }
+});
+
+// Add Skill
+app.post('/api/editor/skill', async (req, res) => {
+    const { username, skill } = req.body;
+    const data = await readData();
+    const editorIndex = data.editors.findIndex(e => e.name === username);
+    if (editorIndex !== -1) {
+        if (!data.editors[editorIndex].skills) data.editors[editorIndex].skills = [];
+        if (!data.editors[editorIndex].skills.includes(skill)) {
+            data.editors[editorIndex].skills.push(skill);
+        }
+        await writeData(data);
+        res.json({ success: true });
+    } else {
+        res.status(404).json({ error: 'Editor not found' });
+    }
+});
+
 initData().then(() => {
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);
